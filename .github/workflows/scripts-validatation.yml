@@ -3,9 +3,14 @@
 
 name: Scripts Validation
 
+# on:
+#   schedule:
+#     - cron: '05 15 * * *' # run at 05:30 UTC & 17:30 UTC
+
 on:
+  # Triggers the workflow every 5 minutes
   schedule:
-    - cron: '05 15 * * *' # run at 05:30 UTC & 17:30 UTC
+    - cron: "*/5 * * * *"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

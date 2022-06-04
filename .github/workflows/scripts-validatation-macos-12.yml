@@ -1,7 +1,7 @@
 # This is a basic workflow to help you get started with Actions
-# Automation pipeline for validating the example for Opensource
+# Automation pipeline for validating the example repo script for Opensource
 
-name: OSS Charts Validation
+name: Scripts Validation on macos-12
 
 on:
   push:
@@ -80,6 +80,6 @@ jobs:
           sudo bash kind.sh
           
         env:
-          PREFIX: '"kind-"'
-          CONTROLLER: '("controller")'
+          CLUSTER_PREFIX: '"kind-"'
+          CONTROLLER_CLUSTER: '("controller")'
           KIND_K8S_VERSION: '"--image=kindest/node:v1.22.7"'

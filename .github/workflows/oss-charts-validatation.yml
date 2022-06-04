@@ -1,0 +1,85 @@
+# This is a basic workflow to help you get started with Actions
+# Automation pipeline for validating the example for Opensource
+
+name: OSS Charts Validation
+
+on:
+  push:
+    # Sequence of patterns matched against refs/heads
+    branches:
+      - master
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - kubeslice-controller-*
+      - kubeslice-worker-*
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "validate" which validates the kubeslice/charts or kubeslice/dev-charts and runs on macos-12
+   validate-on-macos-12:
+    runs-on: macos-12
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: Fetch history
+        run: git fetch --prune --unshallow
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script that will configure multiple kind clusters and interconnect them with KubeSlice.
+        run: |
+
+          # prerequisites
+          brew install kubectx
+
+          brew install kind
+          
+          brew install kubernetes-helm
+
+          brew install docker
+
+          brew install colima
+          colima start
+
+          which sed
+          brew install gnu-sed 
+          brew info gnu-sed
+          export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+          which sed
+
+          # Clone the examples repo
+          git clone https://github.com/kubeslice/examples.git
+          cd examples/kind
+
+          # Create custom.env file
+          sudo sed -i "s|PREFIX=.*|PREFIX=$CLUSTER_PREFIX|" kind.env
+          sudo sed -i "s|CONTROLLER=.*|CONTROLLER=$CONTROLLER_CLUSTER|" kind.env
+          sudo sed -i "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" kind.env
+          sudo sed -i "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
+          sudo sed -i "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" kind.env
+          sudo cat kind.env
+
+          # Validate the charts before release
+          # sudo sed -i "/helm repo update/ a $GIT_CLONE" kind.sh
+          # sudo sed -i "/git clone/ a ls && pwd" kind.sh
+          # sudo sed -i "s|kubeslice/cert-manager|$CERT_MGR|" kind.sh
+          # sudo sed -i "s|kubeslice/kubeslice-controller|$KBS_CTRL|" kind.sh
+          # sudo sed -i "s|kubeslice/kubeslice-worker|$KBS_WRKR|" kind.sh
+
+          # A script that will configure multiple kind clusters and interconnect them with KubeSlice
+          sudo bash kind.sh
+          
+        env:
+          PREFIX: '"kind-"'
+          CONTROLLER: '("controller")'
+          KIND_K8S_VERSION: '"--image=kindest/node:v1.22.7"'

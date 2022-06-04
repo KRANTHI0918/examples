@@ -57,12 +57,16 @@ jobs:
           export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
           which sed
 
+          # Clone the examples repo
+          git clone https://github.com/kubeslice/examples.git
+          cd examples/kind
+
           # Create custom.env file
-          sudo sed -i "s|PREFIX=.*|PREFIX=$CLUSTER_PREFIX|" examples/kind/kind.env
-          sudo sed -i "s|CONTROLLER=.*|CONTROLLER=$CONTROLLER_CLUSTER|" examples/kind/kind.env
-          sudo sed -i "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" examples/kind/kind.env
-          sudo sed -i "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" examples/kind/kind.env
-          sudo sed -i "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" examples/kind/kind.env
+          sudo sed -i "s|PREFIX=.*|PREFIX=$CLUSTER_PREFIX|" kind.env
+          sudo sed -i "s|CONTROLLER=.*|CONTROLLER=$CONTROLLER_CLUSTER|" kind.env
+          sudo sed -i "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" kind.env
+          sudo sed -i "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
+          sudo sed -i "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" kind.env
           sudo cat kind.env
 
           # Validate the charts before release
@@ -73,7 +77,7 @@ jobs:
           # sudo sed -i "s|kubeslice/kubeslice-worker|$KBS_WRKR|" kind.sh
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice
-          sudo bash examples/kind/kind.sh
+          sudo bash kind.sh
           
         env:
           CLUSTER_PREFIX: '"kind-"'

@@ -24,16 +24,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      - name: Free space
+      - name: Free-up space & Log the pre-build disc space
         run: |
           echo "Free space:"
-          df -h
           sudo rm -rf /usr/local/lib/android # will release about 10 GB if you don't need Android
           sudo rm -rf /usr/share/dotnet # will release about 20GB if you don't need .NET
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
           df -h
-
-      - name: Log the pre-build disc space
-        run: ls
 
       - name: Fetch history
         run: git fetch --prune --unshallow
@@ -73,7 +71,7 @@ jobs:
           sudo bash kind.sh
           
       - name: Log the post-build disc space
-        run: ls
+        run: df -h
 
         env:
           CLUSTER_PREFIX: '"kind-"'

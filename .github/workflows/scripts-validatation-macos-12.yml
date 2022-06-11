@@ -4,14 +4,15 @@
 name: Scripts Validation on macos-12
 
 on:
-  push:
-    # Sequence of patterns matched against refs/heads
-    branches:
-      - workflows
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - kubeslice-controller-*
-      - kubeslice-worker-*
+  pull_request:
+  # push:
+  #   # Sequence of patterns matched against refs/heads
+  #   branches:
+  #     - master
+  #   # Sequence of patterns matched against refs/tags
+  #   tags:
+  #     - kubeslice-controller-*
+  #     - kubeslice-worker-*
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

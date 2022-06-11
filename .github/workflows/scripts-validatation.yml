@@ -4,9 +4,10 @@
 name: Scripts Validation
 
 on:
-  push:
-    branches:
-      - workflows
+  pull_request:
+  # push:
+  #   branches:
+  #     - master
   # schedule:
   #   # run at 05:30 UTC & 17:30 UTC
   #   - cron:  '20 14 * * *'

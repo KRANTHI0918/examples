@@ -22,7 +22,7 @@ jobs:
     steps:
 
       - name: Log the pre-build disc space
-        run: ds
+        run: ls
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -65,7 +65,7 @@ jobs:
           sudo bash kind.sh
           
       - name: Log the post-build disc space
-        run: ds
+        run: ls
 
         env:
           CLUSTER_PREFIX: '"kind-"'

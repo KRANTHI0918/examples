@@ -1,0 +1,85 @@
+name: Validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  validate-on-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "controller"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-1"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-2"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-3"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-4"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-5"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-6"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-7"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-8"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-9"
+
+      - name: Create kind cluster with name controller
+        uses: ./
+        with:
+          kubectl_version: "v1.22.7"
+          cluster_name: "worker-10"
+
+      - name: Test
+        run: |
+          kubectl cluster-info
+          kubectl get nodes

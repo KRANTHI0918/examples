@@ -24,8 +24,8 @@ jobs:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 512
-          swap-size-mb: 1024
+          root-reserve-mb: 1024
+          swap-size-mb: 4096
           remove-dotnet: 'true'
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it

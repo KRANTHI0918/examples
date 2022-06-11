@@ -139,7 +139,7 @@ parse_command_line() {
 
 install_kind() {
     echo 'Installing kind...'
-    curl -sSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/$version/kind-linux-amd64"
+    curl -sSLo kind "https://kind.sigs.k8s.io/dl/$version/kind-linux-amd64"
     chmod +x kind
     sudo mv kind /usr/local/bin/kind
 }

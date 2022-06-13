@@ -60,11 +60,11 @@ jobs:
           cd examples/kind
 
           # Create custom.env file
-          # sudo sed -i "s|PREFIX=.*|PREFIX=$CLUSTER_PREFIX|" kind.env
-          # sudo sed -i "s|CONTROLLER=.*|CONTROLLER=$CONTROLLER_CLUSTER|" kind.env
-          # sudo sed -i "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" kind.env
-          # sudo sed -i "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
-          # sudo sed -i "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" kind.env
+          sudo sed -i 's|PREFIX=.*|PREFIX=$CLUSTER_PREFIX|' kind.env
+          sudo sed -i 's|CONTROLLER=.*|CONTROLLER=$CONTROLLER_CLUSTER|' kind.env
+          sudo sed -i 's|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|' kind.env
+          sudo sed -i 's|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|' kind.env
+          sudo sed -i 's|REPO=.*|REPO=${{secrets.HELM_REPO}}|' kind.env
           sudo cat kind.env
           
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice

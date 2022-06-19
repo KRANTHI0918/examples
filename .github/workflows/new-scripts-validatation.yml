@@ -111,6 +111,7 @@ jobs:
 
           brew install docker
 
+          colima delete # delete existing instance
           brew install colima
           colima start --cpu 4 --memory 8 
 

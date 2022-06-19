@@ -60,7 +60,7 @@ jobs:
 
           # Print Kubernetes Clusters
           sudo echo "Clusters Prefix: $CLUSTER_PREFIX"
-          sudo echo "Kubernetes Clusters: $(sudo echo $CONTROLLER_CLUSTER & ${{secrets.WORKER_CLUSTER}})"
+          sudo echo "Kubernetes Clusters: $(sudo echo "$CONTROLLER_CLUSTER & ${{secrets.WORKER_CLUSTER}}")"
 
           # Print Node Count per Cluster
           sudo echo "Node Count per Cluster: 1 Control-Plane & 1 Worker"
@@ -69,7 +69,8 @@ jobs:
           sudo echo "Kind Kubernetes Version: $KIND_K8S_VERSION"
 
           # Print Helm Repo
-          sudo echo "kubeslice helm repo: $(sudo echo ${{secrets.HELM_REPO}} >> secrets.txt)"
+          sudo echo ${{secrets.HELM_REPO}} >> secrets.txt
+          sudo echo "kubeslice helm repo: $(sudo cat secrets.txt)"
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice
           sudo bash kind.sh
@@ -133,7 +134,7 @@ jobs:
 
           # Print Kubernetes Clusters
           sudo echo "Clusters Prefix: $CLUSTER_PREFIX"
-          sudo echo "Kubernetes Clusters: $(sudo echo $CONTROLLER_CLUSTER & ${{secrets.WORKER_CLUSTER}})"
+          sudo echo "Kubernetes Clusters: $(sudo echo "$CONTROLLER_CLUSTER & ${{secrets.WORKER_CLUSTER}}")"
 
           # Print Node Count per Cluster
           sudo echo "Node Count per Cluster: 1 Control-Plane & 1 Worker"
@@ -142,10 +143,11 @@ jobs:
           sudo echo "Kind Kubernetes Version: $KIND_K8S_VERSION"
 
           # Print Helm Repo
-          sudo echo "kubeslice helm repo: $(sudo echo ${{secrets.HELM_REPO}} >> secrets.txt)"
+          sudo echo ${{secrets.HELM_REPO}} >> secrets.txt
+          sudo echo "kubeslice helm repo: $(sudo cat secrets.txt)"
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice
-          sudo bash kind.sh
+          sudo bash macos-kind.sh
           
         env:
           CLUSTER_PREFIX: '"kind-"'

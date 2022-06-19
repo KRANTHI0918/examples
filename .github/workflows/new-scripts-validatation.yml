@@ -45,7 +45,7 @@ jobs:
           sudo sysctl -p
 
           # Clone the examples repo
-          git clone https://github.com/kubeslice/examples.git
+          git clone https://github.com/KRANTHI0918/examples.git
           cd examples/kind
 
           # Create custom.env file
@@ -113,7 +113,7 @@ jobs:
           which sed
 
           # Clone the examples repo
-          git clone https://github.com/kubeslice/examples.git
+          git clone https://github.com/KRANTHI0918/examples.git
           cd examples/kind
 
           # Create custom.env file

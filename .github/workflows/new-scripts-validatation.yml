@@ -4,9 +4,12 @@
 name: Scripts Validation
 
 on:
-  schedule:
-    # This workflow triggers the workflow every day at 5:30 and 17:30 UTC
-    - cron:  '30 5,17 * * *'
+#   schedule:
+#     # This workflow triggers the workflow every day at 5:30 and 17:30 UTC
+#     - cron:  '30 5,17 * * *'
+  push:
+    branches:
+      - master
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

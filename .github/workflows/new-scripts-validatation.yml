@@ -69,8 +69,7 @@ jobs:
           sudo echo "Kind Kubernetes Version: $KIND_K8S_VERSION"
 
           # Print Helm Repo
-          sudo echo $HELM_REPO >> secrets.txt
-          sudo echo "kubeslice helm repo: $(sudo cat secrets.txt)"
+          sudo echo "kubeslice helm repo: $HELM_REPO"
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice
           sudo bash kind.sh
@@ -79,7 +78,7 @@ jobs:
           CLUSTER_PREFIX: '"kind-"'
           CONTROLLER_CLUSTER: '("controller")'
           KIND_K8S_VERSION: '"--image=kindest/node:v1.22.7"'
-          HELM_REPO: ${{secrets.HELM_REPO}}
+          HELM_REPO: "https://kubeslice.github.io/charts"
 
   validate-on-macos-12:
   # This workflow contains a single job called "validate" which validates the kubeslice/charts or kubeslice/dev-charts and runs on macos-12
@@ -131,7 +130,7 @@ jobs:
           sudo sed -i "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" kind.env
           sudo sed -i "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
           sudo sed -i "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" kind.env
-          sudo sed -i "s|sed -i ''|sed -i|g" kind.sh
+          sudo sed -i "s|sed -i ''|sed -i|g" macos-kind.sh
 
           # Print Kubernetes Clusters
           sudo echo "Clusters Prefix: $CLUSTER_PREFIX"
@@ -144,8 +143,7 @@ jobs:
           sudo echo "Kind Kubernetes Version: $KIND_K8S_VERSION"
 
           # Print Helm Repo
-          sudo echo $HELM_REPO >> secrets.txt
-          sudo echo "kubeslice helm repo: $(sudo cat secrets.txt)"
+          sudo echo "kubeslice helm repo: $HELM_REPO"
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice
           sudo bash macos-kind.sh
@@ -154,4 +152,4 @@ jobs:
           CLUSTER_PREFIX: '"kind-"'
           CONTROLLER_CLUSTER: '("controller")'
           KIND_K8S_VERSION: '"--image=kindest/node:v1.22.7"'
-          HELM_REPO: ${{secrets.HELM_REPO}}
+          HELM_REPO: "https://kubeslice.github.io/charts"

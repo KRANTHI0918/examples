@@ -61,7 +61,8 @@ jobs:
           # Print Kubernetes Clusters
           sudo echo "Kubernetes Clusters:"
           clusters=$(sudo echo "$CLUSTER_PREFIX$CONTROLLER_CLUSTER & $CLUSTER_PREFIX${{secrets.WORKER_CLUSTER}}")
-          
+          sudo echo $clusters
+
           # Print Node Count per Cluster
           sudo echo "Node Count per Cluster:"
           sudo echo "1 Control-Plane & 1 Worker"
@@ -132,12 +133,10 @@ jobs:
           sudo sed -i '' "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
           sudo sed -i '' "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" kind.env
 
-          cat >clean.sh <<'EOF'
-          #!/usr/bin/env bash
-
           # Print Kubernetes Clusters
           sudo echo "Kubernetes Clusters:"
           clusters=$(sudo echo "$CLUSTER_PREFIX$CONTROLLER_CLUSTER & $CLUSTER_PREFIX${{secrets.WORKER_CLUSTER}}")
+          sudo echo $clusters
           
           # Print Node Count per Cluster
           sudo echo "Node Count per Cluster:"

@@ -57,23 +57,19 @@ jobs:
           sudo sed -i "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" kind.env
           sudo sed -i "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
           sudo sed -i "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" kind.env
-          
+
           # Print Kubernetes Clusters
-          sudo echo "Kubernetes Clusters:"
-          clusters=$(sudo echo "$CLUSTER_PREFIX$CONTROLLER_CLUSTER & $CLUSTER_PREFIX${{secrets.WORKER_CLUSTER}}")
-          sudo echo $clusters
+          sudo echo "Clusters Prefix: $CLUSTER_PREFIX"
+          sudo echo "Kubernetes Clusters: $(sudo echo "$CLUSTER_PREFIX$CONTROLLER_CLUSTER & $CLUSTER_PREFIX${{secrets.WORKER_CLUSTER}}")"
 
           # Print Node Count per Cluster
-          sudo echo "Node Count per Cluster:"
-          sudo echo "1 Control-Plane & 1 Worker"
+          sudo echo "Node Count per Cluster: 1 Control-Plane & 1 Worker"
 
           # Print Kind Kubernetes Versions
-          sudo echo "Kind Kubernetes Version:"
-          sudo echo "$KIND_K8S_VERSION"
+          sudo echo "Kind Kubernetes Version: $KIND_K8S_VERSION"
 
           # Print Helm Repo
-          sudo echo "kubeslice helm repo:"
-          sudo echo "${{secrets.HELM_REPO}}"
+          sudo echo "kubeslice helm repo: ${{secrets.HELM_REPO}}"
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice
           sudo bash kind.sh
@@ -127,28 +123,24 @@ jobs:
           cd examples/kind
 
           # Create custom.env file
-          sudo sed -i '' "s|PREFIX=.*|PREFIX=$CLUSTER_PREFIX|" kind.env
-          sudo sed -i '' "s|CONTROLLER=.*|CONTROLLER=$CONTROLLER_CLUSTER|" kind.env
-          sudo sed -i '' "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" kind.env
-          sudo sed -i '' "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
-          sudo sed -i '' "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" kind.env
+          sudo sed -i '' -e "s|PREFIX=.*|PREFIX=$CLUSTER_PREFIX|" kind.env
+          sudo sed -i '' -e "s|CONTROLLER=.*|CONTROLLER=$CONTROLLER_CLUSTER|" kind.env
+          sudo sed -i '' -e "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" kind.env
+          sudo sed -i '' -e "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
+          sudo sed -i '' -e "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" kind.env
 
           # Print Kubernetes Clusters
-          sudo echo "Kubernetes Clusters:"
-          clusters=$(sudo echo "$CLUSTER_PREFIX$CONTROLLER_CLUSTER & $CLUSTER_PREFIX${{secrets.WORKER_CLUSTER}}")
-          sudo echo $clusters
-          
+          sudo echo "Clusters Prefix: $CLUSTER_PREFIX"
+          sudo echo "Kubernetes Clusters: $(sudo echo "$CLUSTER_PREFIX$CONTROLLER_CLUSTER & $CLUSTER_PREFIX${{secrets.WORKER_CLUSTER}}")"
+
           # Print Node Count per Cluster
-          sudo echo "Node Count per Cluster:"
-          sudo echo "1 Control-Plane & 1 Worker"
+          sudo echo "Node Count per Cluster: 1 Control-Plane & 1 Worker"
 
           # Print Kind Kubernetes Versions
-          sudo echo "Kind Kubernetes Version:"
-          sudo echo "$KIND_K8S_VERSION"
+          sudo echo "Kind Kubernetes Version: $KIND_K8S_VERSION"
 
           # Print Helm Repo
-          sudo echo "kubeslice helm repo:"
-          sudo echo "${{secrets.HELM_REPO}}"
+          sudo echo "kubeslice helm repo: ${{secrets.HELM_REPO}}"
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice
           sudo bash macos-kind.sh

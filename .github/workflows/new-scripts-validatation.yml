@@ -69,7 +69,7 @@ jobs:
           sudo echo "Kind Kubernetes Version: $KIND_K8S_VERSION"
 
           # Print Helm Repo
-          sudo echo ${{secrets.HELM_REPO}} >> secrets.txt
+          sudo echo $HELM_REPO >> secrets.txt
           sudo echo "kubeslice helm repo: $(sudo cat secrets.txt)"
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice
@@ -143,7 +143,7 @@ jobs:
           sudo echo "Kind Kubernetes Version: $KIND_K8S_VERSION"
 
           # Print Helm Repo
-          sudo echo ${{secrets.HELM_REPO}} >> secrets.txt
+          sudo echo $HELM_REPO >> secrets.txt
           sudo echo "kubeslice helm repo: $(sudo cat secrets.txt)"
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice

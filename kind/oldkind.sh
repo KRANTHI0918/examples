@@ -151,83 +151,11 @@ if [ "$VERBOSE" == true ]; then
     set -o xtrace
 fi
 
-function wait_for_pods {
-  for ns in "$namespace"; do
-    for pod in $(kubectl get pods -n $ns | grep -v NAME | awk '{ print $1 }'); do
-      counter=0
-      kubectl get pod $pod -n $ns
-      while [[ $(kubectl get pods $pod -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' -n $ns) != True ]]; do
-        sleep 1
-        let counter=counter+1
-
-        if ((counter == $sleep)); then
-          echo "POD $pod failed to start in $sleep seconds"
-            kubectl get events -n $ns --sort-by='.lastTimestamp'
-          echo "Exiting"
-
-          exit -1
-        fi
-      done
-    done
-  done
-}
-
-# Install Calico in Controller...
-echo Switch to controller context and Install Calico...
-kubectx $PREFIX$CONTROLLER
-kubectx
-
-echo Install the Tigera Calico operator...
-kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
-
-echo Install the custom resource definitions manifest...
-kubectl create -f https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml
-sleep 120
-
-echo "Check for Calico namespaces, pods"
-kubectl get ns
-kubectl get pods -n calico-system
-echo "Wait for Calico to be Running"
-namespace=calico-system
-sleep=900
-wait_for_pods
-
-kubectl get pods -n calico-system
-
-# Install Calico in Worker...
-for WORKER in ${WORKERS[@]}; do
-
-    # Install Calico in Worker...
-    echo Switch to worker context and Install Calico...
-    kubectx $PREFIX$WORKER
-    kubectx
-
-    echo Install the Tigera Calico operator...
-    kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
-
-    echo Install the custom resource definitions manifest...
-    kubectl create -f https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml
-    sleep 120
-
-    echo "Check for Calico namespaces, pods"
-    kubectl get ns
-    kubectl get pods -n calico-system
-    echo "Wait for Calico to be Running"
-    namespace=calico-system
-    sleep=900
-    wait_for_pods
-
-    kubectl get pods -n calico-system
-
-done
-
 # Helm repo access
 echo Setting up helm...
 helm repo remove kubeslice
 helm repo add kubeslice $REPO
 helm repo update
-helm repo list
-helm search repo kubeslice
 
 # Controller setup...
 echo Switch to controller context and set it up...
@@ -239,9 +167,7 @@ helm install cert-manager kubeslice/cert-manager --namespace cert-manager  --cre
 echo "Check for cert-manager pods"
 kubectl get pods -n cert-manager
 echo "Wait for cert-manager to be Running"
-namespace=cert-manager
-sleep=60
-wait_for_pods
+sleep 30
 
 kubectl get pods -n cert-manager
 
@@ -265,18 +191,16 @@ helm install kubeslice-controller kubeslice/kubeslice-controller -f controller-c
 echo Check for status...
 kubectl get pods -n kubeslice-controller
 echo "Wait for kubeslice-controller-manager to be Running"
-namespace=kubeslice-controller
-sleep=180
-wait_for_pods
+sleep 90
 
 kubectl get pods -n kubeslice-controller
 
 echo kubectl apply -f project.yaml -n kubeslice-controller
 kubectl apply -f project.yaml -n kubeslice-controller
-sleep 30
+sleep 10
 
-echo kubectl get project -n kubeslice-controller
-kubectl get project -n kubeslice-controller
+echo kubectl get project -n kubeslice-avesha
+kubectl get project -n kubeslice-avesha
 
 echo kubectl get sa -n kubeslice-avesha
 kubectl get sa -n kubeslice-avesha
@@ -340,12 +264,8 @@ for WORKER in ${WORKERS[@]}; do
     echo Check for status...
     kubectl get pods -n kubeslice-system
     echo "Wait for kubeslice-system to be Running"
-    namespace=kubeslice-system
-    sleep=300
-    wait_for_pods
+    sleep 60
     kubectl get pods -n kubeslice-system
-    # Iperf Namespace
-    echo Create Iperf Namespace
     kubectl create ns iperf
 done
 
@@ -368,14 +288,12 @@ echo kubectl apply -f $SFILE -n kubeslice-avesha
 kubectl apply -f $SFILE -n kubeslice-avesha
 
 echo "Wait for vl3(slice) and gateway pod to be Running in worker clusters"
+sleep 120
 
 echo "Final status check..."
 for WORKER in ${WORKERS[@]}; do
     echo $PREFIX$WORKER
     kubectx $PREFIX$WORKER
-    namespace=kubeslice-system
-    sleep=240
-    wait_for_pods
     kubectx
     kubectl get pods -n kubeslice-system
 done
@@ -389,9 +307,7 @@ kubectx
 
 kubectl apply -f iperf-sleep.yaml -n iperf
 echo "Wait for iperf to be Running"
-namespace=iperf
-sleep=120
-wait_for_pods
+sleep 60
 kubectl get pods -n iperf
 
 # Switch to kind-worker-2 context
@@ -401,9 +317,7 @@ for WORKER in ${WORKERS[@]}; do
         kubectx
         kubectl apply -f iperf-server.yaml -n iperf
         echo "Wait for iperf to be Running"
-        namespace=iperf
-        sleep=120
-        wait_for_pods
+        sleep 60
         kubectl get pods -n iperf
     fi
 done

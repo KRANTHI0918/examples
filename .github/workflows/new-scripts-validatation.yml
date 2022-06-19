@@ -67,10 +67,12 @@ jobs:
           }
           EOF
 
+          ls & pwd
+          
           # Print Kubernetes Clusters
           sudo echo "Kubernetes Clusters:"
           clusters=$(sudo echo "$CLUSTER_PREFIX-$CONTROLLER_CLUSTER & $CLUSTER_PREFIX-${{secrets.WORKER_CLUSTER}}")
-          clean clusters
+          sudo clean clusters
           
           # Print Node Count per Cluster
           sudo echo "Node Count per Cluster:"

@@ -125,18 +125,6 @@ if [ "$CLEAN" == true ]; then
     exit 0
 fi
 
-# Slice setup
-# Make a slice.yaml from the slice.template.yaml
-SFILE=slice.yaml
-cp $SLICE_TEMPLATE $SFILE
-for WORKER in ${WORKERS[@]}; do
-    sed -i "s/- WORKER/- $WORKER/g" $SFILE
-    sed -i "/- $WORKER/ a \ \ \ \ - WORKER" $SFILE
-done
-sed -i '/- WORKER/d' $SFILE
-
-cat $SFILE
-
 # Create kind clusters
 echo Create the Controller cluster
 echo kind create cluster --name $CONTROLLER --config controller-cluster.yaml $KIND_K8S_VERSION
@@ -355,7 +343,7 @@ for WORKER in ${WORKERS[@]}; do
     kubectl create ns iperf
 done
 
-sleep 60
+sleep 120
 echo Switch to controller context and configure slices...
 kubectx $PREFIX$CONTROLLER
 kubectx
@@ -376,8 +364,6 @@ sed -i '' '/- WORKER/d' $SFILE
 
 echo kubectl apply -f $SFILE -n kubeslice-avesha
 kubectl apply -f $SFILE -n kubeslice-avesha
-
-cat $SFILE
 
 echo "Wait for vl3(slice) and gateway pod to be Running in worker clusters"
 
@@ -402,7 +388,7 @@ kubectx
 kubectl apply -f iperf-sleep.yaml -n iperf
 echo "Wait for iperf to be Running"
 namespace=iperf
-sleep=120
+sleep=300
 wait_for_pods
 kubectl get pods -n iperf
 

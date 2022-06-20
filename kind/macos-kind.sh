@@ -365,6 +365,8 @@ sed -i '' '/- WORKER/d' $SFILE
 echo kubectl apply -f $SFILE -n kubeslice-avesha
 kubectl apply -f $SFILE -n kubeslice-avesha
 
+cat $SFILE
+
 echo "Wait for vl3(slice) and gateway pod to be Running in worker clusters"
 
 echo "Final status check..."

@@ -131,14 +131,14 @@ jobs:
           sudo sed -i "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" kind.env
           sudo sed -i "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
           sudo sed -i "s|REPO=.*|REPO=${{secrets.HELM_REPO}}|" kind.env
-          # sudo sed -i "s|sed -i ''|sed -i|g" macos-kind.sh
+          sudo sed -i "s|sed -i ''|sed -i|g" macos-kind.sh
 
           # Print Kubernetes Clusters
           sudo echo "Clusters Prefix: $CLUSTER_PREFIX"
           sudo echo "Kubernetes Clusters: $(sudo echo "$CONTROLLER_CLUSTER & ${{secrets.WORKER_CLUSTER}}")"
 
           # Print Node Count per Cluster
-          sudo echo "Node Count per Cluster: 1 Control-Plane & 2 Worker"
+          sudo echo "Node Count per Cluster: 1 Control-Plane & 1 Worker"
 
           # Print Kind Kubernetes Versions
           sudo echo "Kind Kubernetes Version: $KIND_K8S_VERSION"

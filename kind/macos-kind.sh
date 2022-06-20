@@ -357,7 +357,7 @@ for WORKER in ${WORKERS[@]}; do
     sed -i '' '14i\
 \
 ' $SFILE
-    sed -i '' '14i\             
+    sed -i '' '14i\
     - WORKER' $SFILE
 done
 sed -i '' '/- WORKER/d' $SFILE

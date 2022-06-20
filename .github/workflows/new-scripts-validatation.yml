@@ -4,6 +4,7 @@
 name: Scripts Validation
 
 on:
+
 #   schedule:
 #     # This workflow triggers the workflow every day at 5:30 and 17:30 UTC
 #     - cron:  '30 5,17 * * *'
@@ -131,7 +132,7 @@ jobs:
           sudo sed -i "s|WORKERS=.*|WORKERS=${{secrets.WORKER_CLUSTER}}|" kind.env
           sudo sed -i "s|KIND_K8S_VERSION=.*|KIND_K8S_VERSION=$KIND_K8S_VERSION|" kind.env
           sudo sed -i "s|REPO=.*|REPO=$HELM_REPO|" kind.env
-          
+
           sudo sed -i "s|sed -i ''|sed -i|g" macos-kind.sh
           sudo sed -i '356,361d' macos-kind.sh
           sudo sed -i '355 a sed -i "s/- WORKER/- $WORKER/g"' macos-kind.sh

@@ -112,7 +112,7 @@ jobs:
 
           brew install colima
           colima stop # delete existing instance
-          colima start --cpu 4 --memory 8
+          colima start --cpu 4 --memory 14 --disk 14
 
           which sed
           brew install gnu-sed 

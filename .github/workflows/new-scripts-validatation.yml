@@ -135,8 +135,9 @@ jobs:
 
           sudo sed -i "s|sed -i ''|sed -i|g" macos-kind.sh
           sudo sed -i '356,361d' macos-kind.sh
-          sudo sed -i '355 a sed -i "s/- WORKER/- $WORKER/g"' macos-kind.sh
           sudo sed -i '356 a sed -i "/- $WORKER/ a /\ /\ /\ /\ - WORKER" $SFILE' macos-kind.sh
+
+          sudo cat macos-kind.sh
 
           # Print Kubernetes Clusters
           sudo echo "Clusters Prefix: $CLUSTER_PREFIX"

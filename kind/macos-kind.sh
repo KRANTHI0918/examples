@@ -400,7 +400,7 @@ for WORKER in ${WORKERS[@]}; do
         kubectl apply -f iperf-server.yaml -n iperf
         echo "Wait for iperf to be Running"
         namespace=iperf
-        sleep=120
+        sleep=300
         wait_for_pods
         kubectl get pods -n iperf
     fi

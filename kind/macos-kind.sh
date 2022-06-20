@@ -125,6 +125,18 @@ if [ "$CLEAN" == true ]; then
     exit 0
 fi
 
+# Slice setup
+# Make a slice.yaml from the slice.template.yaml
+SFILE=slice.yaml
+cp $SLICE_TEMPLATE $SFILE
+for WORKER in ${WORKERS[@]}; do
+    sed -i "s/- WORKER/- $WORKER/g" $SFILE
+    sed -i "/- $WORKER/ a \ \ \ \ - WORKER" $SFILE
+done
+sed -i '/- WORKER/d' $SFILE
+
+cat $SFILE
+
 # Create kind clusters
 echo Create the Controller cluster
 echo kind create cluster --name $CONTROLLER --config controller-cluster.yaml $KIND_K8S_VERSION

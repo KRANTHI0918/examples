@@ -410,7 +410,7 @@ done
 kubectx $PREFIX${WORKERS[0]}
 kubectx
 
-sleep 90
+sleep 120
 # Check Iperf connectity from iperf sleep to iperf server
 IPERF_CLIENT_POD=`kubectl get pods -n iperf | grep iperf-sleep | awk '{ print$1 }'`
 

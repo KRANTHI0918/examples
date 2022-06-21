@@ -114,7 +114,7 @@ jobs:
           brew install colima
           colima delete
           colima stop # delete existing instance
-          colima start --cpu 16 --memory 32
+          colima start --cpu 16 --memory 32 -disk 50
           colima list
           colima status
 

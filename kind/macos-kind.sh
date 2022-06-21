@@ -361,7 +361,7 @@ for WORKER in ${WORKERS[@]}; do
     - WORKER' $SFILE
 done
 sed -i '' '/- WORKER/d' $SFILE
-
+cat sudo $SFILE
 echo kubectl apply -f $SFILE -n kubeslice-avesha
 kubectl apply -f $SFILE -n kubeslice-avesha
 

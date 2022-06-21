@@ -155,6 +155,7 @@ function wait_for_pods {
   for ns in "$namespace"; do
     for pod in $(kubectl get pods -n $ns | grep -v NAME | awk '{ print $1 }'); do
       counter=0
+      echo kubectl get pod $pod -n $ns
       kubectl get pod $pod -n $ns
       while [[ $(kubectl get pods $pod -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' -n $ns) != True ]]; do
         sleep 1

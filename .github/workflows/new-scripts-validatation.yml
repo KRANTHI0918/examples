@@ -115,7 +115,7 @@ jobs:
           colima delete
           colima stop # delete existing instance
 
-          colima start --cpu 6 --memory 6 --disk 30
+          colima start --cpu 8 --memory 16 --disk 30
           colima list
           colima status
 

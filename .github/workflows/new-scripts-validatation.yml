@@ -1,7 +1,7 @@
 # This is a basic workflow to help you get started with Actions
 # Nightly Automation pipeline for validating the examples repo script for Opensource
 
-name: Scripts Validation
+name: New Scripts Validation
 
 on:
 

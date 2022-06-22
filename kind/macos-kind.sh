@@ -310,11 +310,11 @@ for WORKER in ${WORKERS[@]}; do
     CLUSTERNAME=`echo -n $WORKER`
 
     if [ "$VERBOSE" == true ]; then
-	echo Namespace $NAMESPACE
-	echo Endpoint $ENDPOINT
-	echo Ca.crt $CACRT
-	echo Token $TOKEN
-	echo ClusterName $CLUSTERNAME
+	    echo Namespace $NAMESPACE
+	    echo Endpoint $ENDPOINT
+	    echo Ca.crt $CACRT
+	    echo Token $TOKEN
+	    echo ClusterName $CLUSTERNAME
     fi
     
     # Convert the template info a .yaml for this worker

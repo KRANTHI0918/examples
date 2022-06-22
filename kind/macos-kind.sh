@@ -184,7 +184,7 @@ kubectl get ns
 kubectl get pods -n calico-system
 echo "Wait for Calico to be Running"
 namespace=calico-system
-sleep=600
+sleep=120
 wait_for_pods
 
 kubectl get pods -n calico-system
@@ -209,7 +209,7 @@ for WORKER in ${WORKERS[@]}; do
     kubectl get pods -n calico-system
     echo "Wait for Calico to be Running"
     namespace=calico-system
-    sleep=900
+    sleep=120
     wait_for_pods
     
     kubectl get pods -n calico-system
@@ -235,7 +235,7 @@ echo "Check for cert-manager pods"
 kubectl get pods -n cert-manager
 echo "Wait for cert-manager to be Running"
 namespace=cert-manager
-sleep=60
+sleep=120
 wait_for_pods
 
 kubectl get pods -n cert-manager
@@ -261,7 +261,7 @@ echo Check for status...
 kubectl get pods -n kubeslice-controller
 echo "Wait for kubeslice-controller-manager to be Running"
 namespace=kubeslice-controller
-sleep=180
+sleep=120
 wait_for_pods
 
 kubectl get pods -n kubeslice-controller

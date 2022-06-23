@@ -104,13 +104,13 @@ if [ $? -ne 0 ]; then
     echo Error: docker is required and was not found
     ERR=$((ERR+1))
 fi
-which colima > /dev/null
-if [ $? -ne 0 ]; then
-    echo Error: colima is required and was not found 
-    echo Run command colima start --cpu 4 --memory 8
-    echo To create VM with 4CPU, 8GiB memory and 10GiB storage
-    ERR=$((ERR+1))
-fi
+# which colima > /dev/null
+# if [ $? -ne 0 ]; then
+#     echo Error: colima is required and was not found 
+#     echo Run command colima start --cpu 4 --memory 8
+#     echo To create VM with 4CPU, 8GiB memory and 10GiB storage
+#     ERR=$((ERR+1))
+# fi
 
 if [ $ERR -ne 0 ]; then
     echo Exiting due to missing required tools

@@ -128,16 +128,18 @@ jobs:
           brew install kind
           
           brew install kubernetes-helm
+          
+          sudo chmod 666 /var/run/docker.sock
 
-          brew install colima docker kubectl
-          colima version
+          # brew install colima docker kubectl
+          # colima version
 
-          colima delete
-          colima stop # delete existing instance
+          # colima delete
+          # colima stop # delete existing instance
 
-          colima start --cpu 8 --memory 16 --disk 30
-          colima list
-          colima status
+          # colima start --cpu 8 --memory 16 --disk 30
+          # colima list
+          # colima status
 
           which sed
           brew install gnu-sed 

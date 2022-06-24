@@ -129,6 +129,8 @@ jobs:
           
           brew install kubernetes-helm
           
+          brew install docker kubectl
+          
           chmod 666 /var/run/docker.sock
 
           # brew install colima docker kubectl

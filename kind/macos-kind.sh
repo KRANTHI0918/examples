@@ -45,6 +45,7 @@ while getopts "eenvccleanhhelpvverbose--" opt; do
       ;;
     v | verbose)
       VERBOSE=true
+      shift
       ;;
     --) shift;
       break
@@ -184,7 +185,7 @@ kubectl get ns
 kubectl get pods -n calico-system
 echo "Wait for Calico to be Running"
 namespace=calico-system
-sleep=120
+sleep=600
 wait_for_pods
 
 kubectl get pods -n calico-system
@@ -209,7 +210,7 @@ for WORKER in ${WORKERS[@]}; do
     kubectl get pods -n calico-system
     echo "Wait for Calico to be Running"
     namespace=calico-system
-    sleep=120
+    sleep=900
     wait_for_pods
     
     kubectl get pods -n calico-system
@@ -235,7 +236,7 @@ echo "Check for cert-manager pods"
 kubectl get pods -n cert-manager
 echo "Wait for cert-manager to be Running"
 namespace=cert-manager
-sleep=120
+sleep=60
 wait_for_pods
 
 kubectl get pods -n cert-manager
@@ -261,7 +262,7 @@ echo Check for status...
 kubectl get pods -n kubeslice-controller
 echo "Wait for kubeslice-controller-manager to be Running"
 namespace=kubeslice-controller
-sleep=120
+sleep=180
 wait_for_pods
 
 kubectl get pods -n kubeslice-controller
@@ -310,11 +311,11 @@ for WORKER in ${WORKERS[@]}; do
     CLUSTERNAME=`echo -n $WORKER`
 
     if [ "$VERBOSE" == true ]; then
-	    echo Namespace $NAMESPACE
-	    echo Endpoint $ENDPOINT
-	    echo Ca.crt $CACRT
-	    echo Token $TOKEN
-	    echo ClusterName $CLUSTERNAME
+	echo Namespace $NAMESPACE
+	echo Endpoint $ENDPOINT
+	echo Ca.crt $CACRT
+	echo Token $TOKEN
+	echo ClusterName $CLUSTERNAME
     fi
     
     # Convert the template info a .yaml for this worker
@@ -358,11 +359,11 @@ for WORKER in ${WORKERS[@]}; do
     sed -i '' '14i\
 \
 ' $SFILE
-    sed -i '' '14i\
+    sed -i '' '14i\             
     - WORKER' $SFILE
 done
 sed -i '' '/- WORKER/d' $SFILE
-cat $SFILE
+
 echo kubectl apply -f $SFILE -n kubeslice-avesha
 kubectl apply -f $SFILE -n kubeslice-avesha
 

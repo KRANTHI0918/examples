@@ -14,46 +14,88 @@
 #	See the License for the specific language governing permissions and
 #	limitations under the License.
 
-ENV=kind.env
+ENV=kind-ent.env
 CLEAN=false
 VERBOSE=false
 
-# First, check args
-VALID_ARGS=$(getopt -o chve: --long clean,help,verbose,env: -- "$@")
-if [[ $? -ne 0 ]]; then
-    exit 1;
-fi
-eval set -- "$VALID_ARGS"
-while [ : ]; do
-  case "$1" in
-    -e | --env)
+# Check if running in Linux or Mac
+if [ "$(uname)" == "Linux" ]; then
+    # First, check args
+    VALID_ARGS=$(getopt -o chve: --long clean,help,verbose,env: -- "$@")
+    if [[ $? -ne 0 ]]; then
+        exit 1;
+    fi
+    eval set -- "$VALID_ARGS"
+    while [ : ]; do
+      case "$1" in
+        -e | --env)
+            echo "Passed environment file is: '$2'"
+    	ENV=$2
+            shift 2
+            ;;
+        -c | --clean)
+            CLEAN=true
+            shift
+            ;;
+        -h | --help)
+    	echo "Usage is:"
+    	echo "    bash kind-ent.sh [<options>]"
+    	echo " "
+    	echo "    -c | --clean: delete all clusters"
+    	echo "    -e | --env <environment file>: Specify custom environment details"
+    	echo "    -h | --help: Print this message"
+            shift
+    	exit 0
+            ;;
+        -v | --verbose)
+            VERBOSE=true
+            shift
+            ;;
+        --) shift; 
+            break 
+            ;;
+      esac
+    done
+elif [ "$(uname)" == "Darwin" ]; then
+    # First, check args
+    while getopts "eenvccleanhhelpvverbose--" opt; do
+    case "$opt" in
+        e | env)
+        if [[ $2 == '' ]]; then
+            exit 1;
+        fi
         echo "Passed environment file is: '$2'"
-	ENV=$2
+        ENV=$2
         shift 2
         ;;
-    -c | --clean)
+        c | clean)
         CLEAN=true
         shift
         ;;
-    -h | --help)
-	echo "Usage is:"
-	echo "    bash kind.sh [<options>]"
-	echo " "
-	echo "    -c | --clean: delete all clusters"
-	echo "    -e | --env <environment file>: Specify custom environment details"
-	echo "    -h | --help: Print this message"
+        h | help)
+        echo "Usage is:"
+        echo "    bash kind-ent.sh [<options>]"
+        echo " "
+        echo "    -c | --clean: delete all clusters"
+        echo "    -e | --env <environment file>: Specify custom environment details"
+        echo "    -h | --help: Print this message"
         shift
-	exit 0
+        exit 0
         ;;
-    -v | --verbose)
+        v | verbose)
         VERBOSE=true
         shift
         ;;
-    --) shift; 
-        break 
+        --) shift;
+        break
         ;;
-  esac
-done
+    esac
+    done
+
+    if [[ ( $@ -ne '' )]]; then
+        exit 1;
+    fi
+fi
 
 # Pull in the specified environemnt
 source $ENV
@@ -103,8 +145,10 @@ if [ $? -ne 0 ]; then
     echo Error: docker is required and was not found
     ERR=$((ERR+1))
 fi
-OS=`awk -F= '/^ID=/{print $2}' /etc/os-release`
-if [ "$OS" == "ubuntu" ]; then
+
+# Check if running in Linux or Mac
+if [ "$(uname)" == "Linux" ]; then
+    # Increase the inotify.max_user_instances and inotify.max_user_watches sysctls under GNU/Linux platform
     INOT_USER_WAT=`sysctl fs.inotify.max_user_watches | awk '{ print $3 }'`
     if [ $INOT_USER_WAT -lt 524288 ]; then
 	echo Warning: kind recommends at least 524288 fs.inotify.max_user_watches
@@ -113,9 +157,24 @@ if [ "$OS" == "ubuntu" ]; then
     if [ $INOT_USER_INST -lt 512 ]; then
 	echo Warning: kind recommends at least 512 fs.inotify.max_user_instances
     fi
+
+    BSDSED=""
+
+elif [ "$(uname)" == "Darwin" ]; then
+    # Install colima under Mac OS X platform
+    which colima > /dev/null
+    if [ $? -ne 0 ]; then
+        echo Error: colima is required and was not found 
+        echo Run command colima start --cpu 4 --memory 8
+        echo To create VM with 4CPU, 8GiB memory and 10GiB storage
+        ERR=$((ERR+1))
+    fi
+
+    BSDSED="''"
+
 else
-    # Not Ubuntu... on yor own
-    echo Platform is $OS \(not Ubuntu\)... other checks skipped
+    # Not Ubuntu & Mac... on your own
+    echo Environment is $(uname) \(not Ubuntu & Mac\)... other checks skipped
 fi
 
 if [ $ERR -ne 0 ]; then
@@ -151,9 +210,10 @@ if [ "$VERBOSE" == true ]; then
     set -o xtrace
 fi
 
+pods=$(kubectl get pods -n $namespace | grep -v NAME | awk '{ print $1 }')
 function wait_for_pods {
   for ns in "$namespace"; do
-    for pod in $(kubectl get pods -n $ns | grep -v NAME | awk '{ print $1 }'); do
+    for pod in ${pods[@]}; do
       counter=0
       echo kubectl get pod $pod -n $ns
       kubectl get pod $pod -n $ns
@@ -215,7 +275,7 @@ for WORKER in ${WORKERS[@]}; do
     kubectl get pods -n calico-system
     echo "Wait for Calico to be Running"
     namespace=calico-system
-    sleep=900
+    sleep=90
     wait_for_pods
 
     kubectl get pods -n calico-system
@@ -224,11 +284,11 @@ done
 
 # Helm repo access
 echo Setting up helm...
-helm repo remove kubeslice
-helm repo add kubeslice $REPO
-helm repo update
+helm repo remove kubeslice-ent
+helm repo add kubeslice-ent $HELM_REPO --username $HELM_USER --password $HELM_PASS
+helm repo update kubeslice-ent
 helm repo list
-helm search repo kubeslice
+helm search repo kubeslice-ent
 
 # Controller setup...
 echo Switch to controller context and set it up...
@@ -258,7 +318,7 @@ echo Endpoint after base64 is: $DECODE_CONTROLLER_ENDPOINT
 # Make a controller values yaml from the controller template yaml
 CFILE=$CONTROLLER-config.yaml
 cp $CONTROLLER_TEMPLATE $CFILE
-sed -i "s/ENDPOINT/$CONTROLLER_ENDPOINT/g" $CFILE
+sed -i $BSDSED "s/ENDPOINT/$CONTROLLER_ENDPOINT/g" $CFILE
 
 echo "Install the kubeslice-controller"
 helm install kubeslice-controller kubeslice/kubeslice-controller -f controller-config.yaml --namespace kubeslice-controller --create-namespace $CONTROLLER_VERSION
@@ -288,7 +348,7 @@ REGFILE=clusters-registration.yaml
 echo "Register clusters"
 for WORKER in ${WORKERS[@]}; do
     cp $REGISTRATION_TEMPLATE $REGFILE
-    sed -i "s/WORKER/$WORKER/g" $REGFILE
+    sed -i $BSDSED "s/WORKER/$WORKER/g" $REGFILE
     kubectl apply -f clusters-registration.yaml -n kubeslice-avesha
 done
 
@@ -326,17 +386,17 @@ for WORKER in ${WORKERS[@]}; do
     # Convert the template info a .yaml for this worker
     WFILE=$WORKER.config.yaml
     cp $WORKER_TEMPLATE $WFILE
-    sed -i "s/NAMESPACE/$NAMESPACE/g" $WFILE
-    sed -i "s/ENDPOINT/$DECODE_CONTROLLER_ENDPOINT/g" $WFILE
-    sed -i "s/CACRT/$CACRT/g" $WFILE
-    sed -i "s/TOKEN/$TOKEN/g" $WFILE
-    sed -i "s/WORKERNAME/$CLUSTERNAME/g" $WFILE
+    sed -i $BSDSED "s/NAMESPACE/$NAMESPACE/g" $WFILE
+    sed -i $BSDSED "s/ENDPOINT/$DECODE_CONTROLLER_ENDPOINT/g" $WFILE
+    sed -i $BSDSED "s/CACRT/$CACRT/g" $WFILE
+    sed -i $BSDSED "s/TOKEN/$TOKEN/g" $WFILE
+    sed -i $BSDSED "s/WORKERNAME/$CLUSTERNAME/g" $WFILE
 
 
     # Switch to worker context
     kubectx $PREFIX$WORKER
     WORKERNODEIP=`kubectl get nodes -o wide | grep $WORKER-worker | head -1 | awk '{ print $6 }'`
-    sed -i "s/NODEIP/$WORKERNODEIP/g" $WFILE
+    sed -i $BSDSED "s/NODEIP/$WORKERNODEIP/g" $WFILE
     helm install kubeslice-worker kubeslice/kubeslice-worker -f $WFILE --namespace kubeslice-system  --create-namespace $WORKER_VERSION
     echo Check for status...
     kubectl get pods -n kubeslice-system
@@ -350,7 +410,7 @@ for WORKER in ${WORKERS[@]}; do
     kubectl create ns iperf
 done
 
-sleep 60
+sleep 120
 echo Switch to controller context and configure slices...
 kubectx $PREFIX$CONTROLLER
 kubectx
@@ -359,11 +419,24 @@ kubectx
 # Make a slice.yaml from the slice.template.yaml
 SFILE=slice.yaml
 cp $SLICE_TEMPLATE $SFILE
-for WORKER in ${WORKERS[@]}; do
-    sed -i "s/- WORKER/- $WORKER/g" $SFILE
-    sed -i "/- $WORKER/ a \ \ \ \ - WORKER" $SFILE
-done
-sed -i '/- WORKER/d' $SFILE
+
+# Check if running in Linux or Mac
+if [ "$(uname)" == "Linux" ]; then
+    for WORKER in ${WORKERS[@]}; do
+        sed -i $BSDSED "s/- WORKER/- $WORKER/g" $SFILE
+        sed -i $BSDSED "/- $WORKER/ a \ \ \ \ - WORKER" $SFILE
+    done
+elif [ "$(uname)" == "Darwin" ]; then
+    for WORKER in ${WORKERS[@]}; do
+        sed -i $BSDSED "s/- WORKER/- $WORKER/g" $SFILE
+        sed -i $BSDSED '14i\
+\
+' $SFILE
+      sed -i $BSDSED '14i\             
+        - WORKER' $SFILE
+    done
+fi
+sed -i $BSDSED '/- WORKER/d' $SFILE
 
 echo kubectl apply -f $SFILE -n kubeslice-avesha
 kubectl apply -f $SFILE -n kubeslice-avesha
@@ -421,7 +494,77 @@ kubectl exec -it $IPERF_CLIENT_POD -c iperf -n iperf -- iperf -c iperf-server.ip
 if [ $? -ne 0 ]; then
     echo '***Error: Connectivity between clusters not succesful!'
     ERR=$((ERR+1))
+    # Return status
+    exit $ERR
 fi
 
-# Return status
-exit $ERR
+# Kubeslice Enterprise setup...
+echo Initializing Kubeslice Enterprise Setup...
+kubectx $PREFIX$CONTROLLER
+kubectx
+
+echo Creating Image Pull Secrets...
+kubectl create secret docker-registry kubeslice-ui-ent-dev-creds --docker-server=https://index.docker.io/v1/ --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_PASSWORD --docker-email=$DOCKER_EMAIL -n kubeslice-controller
+kubectl get secret kubeslice-ui-ent-dev-creds -n kubeslice-controller
+
+echo Deploying Kubeslice Enterprise Helm Charts...
+helm install kubeslice-ent kubeslice-ent/kubeslice-ui --set 'kubeslice.ui.service.type=NodePort' -n kubeslice-controller
+
+echo "Check for Kubeslice Enterprise pod"
+kubectl get pods -n kubeslice-controller
+
+sleep 5
+
+echo "Wait for Kubeslice Enterprise pod to be Running"
+namespace=kubeslice-controller
+sleep=60
+pods=${pods[1]}
+wait_for_pods
+
+kubectl get pods -n kubeslice-controller
+
+echo Creating the Kubeconfig file used to access the KubeSlice UI. 
+
+# Getting the Secrets for the Service Account
+# Cosmetics for the created config
+clusterName=$PREFIX$CONTROLLER
+# your server address goes here get it via `kubectl cluster-info`
+server=$controllerendpoint
+# the Namespace and ServiceAccount name that is used for the config
+namespace=$PJTNAMESPACE
+serviceAccount=$SERVICEACCOUNT
+
+secretName=$(kubectl --namespace $namespace get serviceAccount $serviceAccount -o jsonpath='{.secrets[0].name}')
+ca=$(kubectl --namespace $namespace get secret/$secretName -o jsonpath='{.data.ca\.crt}')
+token=$(kubectl --namespace $namespace get secret/$secretName -o jsonpath='{.data.token}' | base64 --decode)
+
+cat << EOF > kubeconfig.yaml
+---
+apiVersion: v1
+kind: Config
+clusters:
+  - name: ${clusterName}
+    cluster:
+      certificate-authority-data: ${ca}
+      server: ${server}
+contexts:
+  - name: ${serviceAccount}@${clusterName}
+    context:
+      cluster: ${clusterName}
+      namespace: ${namespace}
+      user: ${serviceAccount}
+users:
+  - name: ${serviceAccount}
+    user:
+      token: ${token}
+current-context: ${serviceAccount}@${clusterName}
+EOF
+
+echo "Fetch the URL to access the Kubeslice Enterprise UI"
+TARGETPORT=`kubectl get services -n kubeslice-controller | egrep 'kubeslice-ui' | grep -o -P '(?<=:).*(?=/TCP)'`
+INTERNALIP=`kubectl get nodes -o wide | grep master | awk '{ print $6 }'`
+KS_ENT_URL=$INTERNALIP:$TARGETPORT
+
+curl http://$KS_ENT_URL/
+
+echo -e "\nURL to login 'Avesha Kube Slice' is: http://$KS_ENT_URL/"

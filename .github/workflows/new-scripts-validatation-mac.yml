@@ -157,7 +157,7 @@ jobs:
           sudo echo "kubeslice helm repo: $HELM_REPO"
 
           # A script that will configure multiple kind clusters and interconnect them with KubeSlice
-          sudo bash macos-kind.sh
+          sudo bash kind.sh
 
         env:
           CLUSTER_PREFIX: '"kind-"'

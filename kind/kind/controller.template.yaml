@@ -1,0 +1,39 @@
+kubeslice:
+  controller:
+    loglevel: Debug
+    rbacResourcePrefix: kubeslice-rbac
+    projectnsPrefix: kubeslice
+    endpoint: https://ENDPOINT
+
+imagePullSecrets:
+  repository: https://index.docker.io/v1/
+  username: aveshadev
+  password: 7436b152-a5c8-4c31-9177-267fff0dadf7
+  email: kranthi@aveshasystems.com
+
+# Default values for k-native.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# kubeslice:
+#   rbacproxy:
+#     image: gcr.io/kubebuilder/kube-rbac-proxy
+#     tag: v0.8.0
+#   controller:
+#     logLevel: info
+#     rbacResourcePrefix: kubeslice-rbac
+#     projectnsPrefix: kubeslice
+#     endpoint: 
+#     image: aveshasystems/kubeslice-controller
+#     tag: 0.3.6
+#     pullPolicy: IfNotPresent
+#   ovpnJob:
+#     image: aveshasystems/gateway-certs-generator
+#     tag: 0.1.1
+
+# username & password & email values for imagePullSecrets has to provided to create a secret
+# imagePullSecrets:
+#   repository: https://index.docker.io/v1/
+#   username:
+#   password:
+#   email:

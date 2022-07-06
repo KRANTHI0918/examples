@@ -1,0 +1,84 @@
+## Base64 encoded secret values from controller cluster
+controllerSecret:
+  namespace: a3ViZXNsaWNlLWF2ZXNoYQ==
+  endpoint: aHR0cHM6Ly8xNzIuMTguMC4yOjY0NDM=
+  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQWVhZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJeU1EY3dNVEV3TlRVd05sb1hEVE15TURZeU9ERXdOVFV3Tmxvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTXB0CnpYZnFvenVjQ3BReTFLcDBJMzFYemppU2VMSE45TkhxeGxmaDRtQnNtUmNtRjd5dGZMZCt6Q0pkcnV1K3pjZ3IKT040R3lLQjFCLzc1K2hxUExoUW04YllxcktJdm03ajJaamV5Ri9HVHdVWENjUlpZR1FXd0dUZFFYZzhUVzVNcQpFTGFud015R3JwbzdVSzhJMjZDSzZzSkozV0tFTzZxeWZ3aTVFREtXMzg4bm85bjlMTWRrVW9qZGF0OVErN0VoCkZObmZJeThTTkV2emNQM1JuS1dlUWlmbTBON3NTclVRS2liWDBLZFVsTUxObnczc0Q1Z1c3K3dHNS9nODh4S1AKT0ZOWWJoM1M0K0NJYUFhN1k2eDJwU254dGhFMWJvaUo0M0NNald6UUllY0ZDSG4vaXJVNzgrdUp2aWxCNmFBTAoxcm1JR00vbWVJaU9XcEt0SDRrQ0F3RUFBYU5aTUZjd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZIWkE2K0tSREs4TU1YQktUS2tDRkdiSWRaeHRNQlVHQTFVZEVRUU8KTUF5Q0NtdDFZbVZ5Ym1WMFpYTXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBRGR2Zy9LWXFZNjM1ZTZVN0N6YwprRjJmUWNwZE1JcUhYWmYvUnljOW9nSWFSS1hBWjFCMHhBTGdBWDRzUEVydEpabmpNaXF2Q3RUNkVQR1BmY3RWCkphNUlOUTkwN0JVZ29XdU9DRVdVaU5GeXd5MWpqeUV5MEp6aGRZSFRaR3J4aXZxR2RpRFI2eXNNRGRTWjlTYjkKNVdCdnI3VzRXeE1OWTFZOUN6WGNqRGRSK0ozRkVVcWtsaVNCVkRrMVFPQmVGWXVoUW5GVnNHKzBkRlR5VE1IcAptdy9TbE1kN3J4OEJrN0RIb1M3bTRTL09tVTdkdDRaUWsvMW1iQncyYnRXSk9LV3Ftdll3OHorR1NEVUdjSnVMCmQ1VmNicmE0STVISDRXRmxJYUNRc2xSMGZFakNPRUdpcUFDR3p6emdWMWRUckNVZjFtT2phN0k5R3hzS1BYaWkKNWEwPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  token: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNkltb3hWbTVLWDNCR2VYazVSVGxHTXpGeVdIUllia0kyUlZwNFFtSkxlVms0UWxSNmEwOVRkMXBJUnpRaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUpyZFdKbGMyeHBZMlV0WVhabGMyaGhJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpXTnlaWFF1Ym1GdFpTSTZJbXQxWW1WemJHbGpaUzF5WW1GakxYZHZjbXRsY2kxM2IzSnJaWEl0TVMxMGIydGxiaTE2Tm5ONE5pSXNJbXQxWW1WeWJtVjBaWE11YVc4dmMyVnlkbWxqWldGalkyOTFiblF2YzJWeWRtbGpaUzFoWTJOdmRXNTBMbTVoYldVaU9pSnJkV0psYzJ4cFkyVXRjbUpoWXkxM2IzSnJaWEl0ZDI5eWEyVnlMVEVpTENKcmRXSmxjbTVsZEdWekxtbHZMM05sY25acFkyVmhZMk52ZFc1MEwzTmxjblpwWTJVdFlXTmpiM1Z1ZEM1MWFXUWlPaUl6WW1ZNVlXVTJNaTFoTTJNeUxUUXpNekl0T0RCa01TMDJOVE00TXpBNVptRmhNVEFpTENKemRXSWlPaUp6ZVhOMFpXMDZjMlZ5ZG1salpXRmpZMjkxYm5RNmEzVmlaWE5zYVdObExXRjJaWE5vWVRwcmRXSmxjMnhwWTJVdGNtSmhZeTEzYjNKclpYSXRkMjl5YTJWeUxURWlmUS5wSi1RZjg1TlNySzNfVUFNZ3dPUGp3LXVVRXZ2cVN0TTdBakxMcE11TTFSLXBLMU0tc0EwOFFRdFRjLWYtRTlUWW1fdkY0bUZXSkExN25zVW5yYk9xSGVhQjh4TXhJWHpJOXFmUGZCclFNb2Q0Z0tSTmJzNkc0NWljLVNVamdTLWFZU3hHQmtHcnNUZTRXaXhac3JjRDR5WU8tblhCSTI5dVhXRVRrWHRUXzRScngzWC1fVkZJb1B0aTNfSW5xSGRzVDYybDFlNWM5TmxVaXFDWDhXamt3UHFuMnBQZ0RaUjFkOTdvTnZYYW1sWG5QTElxTWNOa2h0RHdzQU5TUHdkVnVsLUt3VVJoSU1Pa01TRmttLTJGUUpKOG9fenhfMktUcGtBYnU4MDUwM1BMMEg1OXpDcVpEai03RzIzY3IwaEs4a1FJNWpnVVZnRzc4MDRLN2h3aGc=
+
+cluster:
+  name: worker-1
+  nodeIp: 172.18.0.4
+
+imagePullSecrets:
+  repository: https://index.docker.io/v1/
+  username: aveshadev
+  password: 7436b152-a5c8-4c31-9177-267fff0dadf7
+  email: kranthi@aveshasystems.com
+
+# operator:
+#   image: docker.io/aveshasystems/worker-operator
+#   tag: 0.6.1
+#   pullPolicy: IfNotPresent
+#   logLevel: INFO
+
+# Base64 encoded secret values from controller cluster
+# controllerSecret:
+#   namespace:
+#   endpoint:
+#   ca.crt:
+#   token:
+
+# cluster:
+#   name:
+#   nodeIp:
+#   endpoint:
+
+# router:
+#   image: docker.io/aveshasystems/vl3_ucnf-nse
+#   tag: 1.0.0
+#   pullPolicy: IfNotPresent
+
+# routerSidecar:
+#   image: docker.io/aveshasystems/kubeslice-router-sidecar
+#   tag: 0.1.1
+#   pullPolicy: IfNotPresent
+
+# netop:
+#   networkInterface: eth0
+#   image: docker.io/aveshasystems/netops
+#   tag: 0.1.0
+#   pullPolicy: IfNotPresent
+
+# gateway:
+#   image: docker.io/aveshasystems/gw-sidecar
+#   tag: 0.1.0
+#   pullPolicy: IfNotPresent
+#   logLevel: INFO
+
+# openvpn:
+#   server:
+#     image: docker.io/aveshasystems/openvpn-server.ubuntu.18.04
+#     tag: 1.0.0
+#     pullPolicy: IfNotPresent
+#   client:
+#     image: docker.io/aveshasystems/openvpn-client.alpine.amd64
+#     tag: 1.0.0
+#     pullPolicy: IfNotPresent
+
+# dns:
+#   image: docker.io/aveshasystems/dns
+#   tag: 0.0.2
+#   pullPolicy: IfNotPresent
+
+# nsm:
+#   forwardingPlane: kernel
+
+# jaeger:
+#   enabled: false
+
+# username & password & email values for imagePullSecrets has to provided to create a secret
+# imagePullSecrets:
+#   repository: https://index.docker.io/v1/
+#   username:
+#   password:
+#   email:

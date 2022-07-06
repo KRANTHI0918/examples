@@ -50,7 +50,7 @@ jobs:
 
           # Clone the examples repo
           git clone https://github.com/KRANTHI0918/examples.git
-          cd examples/examples-ent/kind-ent
+          cd examples/examples-ent/kind
 
           # Create custom.env file
           # sudo sed -i "s|PREFIX=.*|PREFIX=$CLUSTER_PREFIX|" kind.env
